@@ -11,6 +11,7 @@
     "test": "echo 'no unit tests in apps/web yet'"
   },
   "dependencies": {
+    "@ltp/ai": "workspace:*",
     "@ltp/core": "workspace:*",
     "@ltp/db": "workspace:*",
     "@ltp/market-data": "workspace:*",

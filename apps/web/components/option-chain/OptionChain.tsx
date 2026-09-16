@@ -5,6 +5,7 @@ import type { ComputedOptionChain } from "@/lib/marketData";
 import { getMockExpiries, INSTRUMENTS } from "@/lib/instruments";
 import { OptionChainTable } from "./OptionChainTable";
 import { AnalyticalPanels } from "./Panels";
+import { AiInsights } from "@/components/ai/AiInsights";
 import type { SortDirection, SortMetric, ViewMode } from "./types";
 
 const REFRESH_INTERVAL_MS = 5000;
@@ -253,6 +254,10 @@ export function OptionChain() {
       </div>
 
       {data && <AnalyticalPanels chain={data} mode={mode} />}
+
+      {data && (
+        <AiInsights instrument={instrument} expiry={expiry} mode={mode === "beginner" ? "beginner" : "advanced"} />
+      )}
     </div>
   );
 }
