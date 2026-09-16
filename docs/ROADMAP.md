@@ -4,20 +4,22 @@ The platform is built in 14 sequential phases. A phase is not started until the 
 
 | Phase | Name | Status |
 |---|---|---|
-| 0 | Product Blueprint + Competitor Analysis | **Done — pending approval** |
-| 1 | Technical Architecture | Not started |
-| 2 | NSE Market Data Infrastructure | Not started |
-| 3 | Deterministic Market Calculation Engine | Not started |
-| 4 | LTP Calculator | Not started |
-| 5 | Advanced Option Chain | Not started |
-| 6 | Historical Data + Charts | Not started |
-| 7 | AI Options Intelligence | Not started |
-| 8 | User Accounts + Watchlists + Alerts | Not started |
-| 9 | SEO Architecture | Not started |
-| 10 | SEO Content + Blog Engine | Not started |
-| 11 | Free-to-Premium SaaS | Not started |
-| 12 | Testing + Security + Performance | Not started |
-| 13 | Production Deployment | Not started |
+| 0 | Product Blueprint + Competitor Analysis | Done — see `docs/phase-0/` |
+| 1 | Technical Architecture | Done — see `docs/phase-1/` |
+| 2 | NSE Market Data Infrastructure | Done — `packages/market-data` (provider interface, validation, `MockProvider`); no standalone `docs/phase-2/` was written, see the "Phase 1-3" commit and `docs/phase-4/README.md` for how it's used |
+| 3 | Deterministic Market Calculation Engine | Done — `packages/core`; same note as Phase 2 above |
+| 4 | LTP Calculator | Done — see `docs/phase-4/` |
+| 5 | Advanced Option Chain | Done — see `docs/phase-5/` |
+| 6 | Historical Data + Charts | Done — see `docs/phase-6/` |
+| 7 | AI Options Intelligence | Done — see `docs/phase-7/` |
+| 8 | User Accounts + Watchlists + Alerts | Done — see `docs/phase-8/` |
+| 9 | SEO Architecture | Done — see `docs/phase-9/` |
+| 10 | SEO Content + Blog Engine | Done — see `docs/phase-10/` |
+| 11 | Free-to-Premium SaaS | Done — see `docs/phase-11/` |
+| 12 | Testing + Security + Performance | Done — see `docs/phase-12/` |
+| 13 | Production Deployment | Done — see `docs/phase-13/` |
+
+Every phase marked "Done" shipped real, verified code (not just design docs) — check that phase's own `README.md` for what was actually built, how it was verified (including live manual verification against a running server, not only unit tests), and its explicitly documented known limitations. "Done" means the phase's stated scope shipped and was verified; it does not mean every open item across all phases is resolved — see `docs/phase-13/README.md`'s production readiness checklist for what's still outstanding (a real data-provider license, real billing credentials, a real Docker build/run verification, legal review) before this goes to real users.
 
 ## Rules that apply to every phase
 

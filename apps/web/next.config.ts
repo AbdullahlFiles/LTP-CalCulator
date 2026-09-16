@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Produces a minimal, self-contained server bundle (.next/standalone) —
+  // the standard shape for a container image (docs/phase-13/README.md),
+  // so the runtime image doesn't need the full node_modules tree.
+  output: "standalone",
   transpilePackages: [
     "@ltp/core",
     "@ltp/market-data",
