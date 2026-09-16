@@ -2,8 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@ltp/db";
 import { hashPassword } from "@/lib/password";
+import { checkRateLimit, getClientIp } from "@/lib/rateLimit";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const REGISTER_LIMIT = 5;
+const REGISTER_WINDOW_MS = 15 * 60 * 1000;
 
 const registerSchema = z.object({
   email: z.string().min(3).max(254).regex(EMAIL_PATTERN, "Invalid email address"),
@@ -12,6 +15,14 @@ const registerSchema = z.object({
 });
 
 export async function POST(request: NextRequest) {
+  const rateLimit = checkRateLimit(`register:${getClientIp(request)}`, REGISTER_LIMIT, REGISTER_WINDOW_MS);
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: "Too many registration attempts. Please try again later." },
+      { status: 429, headers: { "Retry-After": String(rateLimit.retryAfterSeconds) } },
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();
