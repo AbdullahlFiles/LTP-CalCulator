@@ -1,4 +1,4 @@
-import type { ContractQuote } from "./types.js";
+import type { ContractQuote } from "./types";
 
 /**
  * Max Pain: the strike at which total payout to option holders (equivalently,

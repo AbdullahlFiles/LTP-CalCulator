@@ -1,3 +1,3 @@
-export * from "./provider.js";
-export * from "./validate.js";
-export * from "./mockProvider.js";
+export * from "./provider";
+export * from "./validate";
+export * from "./mockProvider";

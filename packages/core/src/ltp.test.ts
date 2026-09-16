@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { computeLtpChange, computeContractLtpChange } from "./ltp.js";
-import { makeQuote } from "./testFixtures.js";
+import { computeLtpChange, computeContractLtpChange } from "./ltp";
+import { makeQuote } from "./testFixtures";
 
 describe("computeLtpChange", () => {
   it("computes change and percent change", () => {

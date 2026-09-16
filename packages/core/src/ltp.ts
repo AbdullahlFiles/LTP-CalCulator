@@ -1,4 +1,4 @@
-import type { ChangeResult, ContractQuote } from "./types.js";
+import type { ChangeResult, ContractQuote } from "./types";
 
 /**
  * LTP change and percentage change, relative to the previous session's close.

@@ -1,4 +1,4 @@
-import type { ContractQuote } from "./types.js";
+import type { ContractQuote } from "./types";
 
 export type BuildupSignal =
   | "long-buildup"

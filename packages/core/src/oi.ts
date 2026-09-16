@@ -1,4 +1,4 @@
-import type { ChangeResult, ContractQuote } from "./types.js";
+import type { ChangeResult, ContractQuote } from "./types";
 
 /**
  * Change in Open Interest and its percentage, relative to the previous

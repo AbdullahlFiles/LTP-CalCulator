@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { detectImportantStrikes, detectSupportResistance } from "./supportResistance.js";
-import { makeQuote } from "./testFixtures.js";
+import { detectImportantStrikes, detectSupportResistance } from "./supportResistance";
+import { makeQuote } from "./testFixtures";
 
 describe("detectSupportResistance", () => {
   it("ranks resistance by call OI and support by put OI, descending", () => {

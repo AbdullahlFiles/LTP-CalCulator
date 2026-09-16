@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { detectBuildup, isUnusual } from "./buildup.js";
-import { makeQuote } from "./testFixtures.js";
+import { detectBuildup, isUnusual } from "./buildup";
+import { makeQuote } from "./testFixtures";
 
 describe("detectBuildup", () => {
   it("detects long buildup: price up, OI up", () => {

@@ -1,4 +1,4 @@
-import type { Moneyness, OptionType } from "./types.js";
+import type { Moneyness, OptionType } from "./types";
 
 /**
  * Finds the strike closest to the underlying price. On a tie, the lower

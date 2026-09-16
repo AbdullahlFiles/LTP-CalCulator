@@ -1,4 +1,4 @@
-import type { ContractQuote, OptionType } from "./types.js";
+import type { ContractQuote, OptionType } from "./types";
 
 export function makeQuote(overrides: Partial<ContractQuote> = {}): ContractQuote {
   return {

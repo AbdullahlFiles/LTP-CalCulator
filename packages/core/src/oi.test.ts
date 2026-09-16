@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { computeOiChange, computeContractOiChange } from "./oi.js";
-import { makeQuote } from "./testFixtures.js";
+import { computeOiChange, computeContractOiChange } from "./oi";
+import { makeQuote } from "./testFixtures";
 
 describe("computeOiChange", () => {
   it("computes change and percent change", () => {

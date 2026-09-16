@@ -1,5 +1,5 @@
 import type { ContractQuote, OptionChainSnapshot, OptionType } from "@ltp/core";
-import type { MarketDataProvider } from "./provider.js";
+import type { MarketDataProvider } from "./provider";
 
 /** Deterministic seeded PRNG (mulberry32) so tests and local dev are reproducible. */
 function mulberry32(seed: number): () => number {
@@ -138,10 +138,16 @@ export class MockProvider implements MarketDataProvider {
       bid: Math.round((ltp - spread) * 100) / 100,
       ask: Math.round((ltp + spread) * 100) / 100,
       greeks: {
+        // ~0.5 (CE) / ~-0.5 (PE) at ATM, trending toward +-1 deep ITM and
+        // 0 deep OTM — a rough shape, not a real pricing-model delta.
         delta:
           optionType === "CE"
-            ? Math.round((1 - distance / 2000) * 100) / 100
-            : Math.round((-1 + distance / 2000) * 100) / 100,
+            ? Math.round(
+                Math.min(1, Math.max(0, 0.5 + (underlyingPrice - strike) / 1000)) * 100,
+              ) / 100
+            : Math.round(
+                Math.min(0, Math.max(-1, -0.5 + (underlyingPrice - strike) / 1000)) * 100,
+              ) / 100,
         gamma: Math.round((0.001 + this.rng() * 0.002) * 10000) / 10000,
         theta: Math.round(-(5 + this.rng() * 10) * 100) / 100,
         vega: Math.round((10 + this.rng() * 20) * 100) / 100,

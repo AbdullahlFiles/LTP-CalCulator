@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { OptionChainSnapshot } from "@ltp/core";
-import { validateSnapshot } from "./validate.js";
+import { validateSnapshot } from "./validate";
 
 function baseSnapshot(overrides: Partial<OptionChainSnapshot> = {}): OptionChainSnapshot {
   return {

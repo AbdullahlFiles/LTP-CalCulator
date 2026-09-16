@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { classifyMoneyness, findAtmStrike } from "./moneyness.js";
+import { classifyMoneyness, findAtmStrike } from "./moneyness";
 
 describe("findAtmStrike", () => {
   it("finds the closest strike", () => {

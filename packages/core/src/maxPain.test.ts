@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { computeMaxPain } from "./maxPain.js";
-import { makeQuote } from "./testFixtures.js";
+import { computeMaxPain } from "./maxPain";
+import { makeQuote } from "./testFixtures";
 
 describe("computeMaxPain", () => {
   it("returns null for an empty chain", () => {

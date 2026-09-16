@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { computePcr, computeStrikeWisePcr } from "./pcr.js";
-import { makeQuote } from "./testFixtures.js";
+import { computePcr, computeStrikeWisePcr } from "./pcr";
+import { makeQuote } from "./testFixtures";
 
 describe("computePcr", () => {
   it("computes total put OI over total call OI", () => {

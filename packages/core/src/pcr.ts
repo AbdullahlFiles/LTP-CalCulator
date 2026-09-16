@@ -1,4 +1,4 @@
-import type { ContractQuote } from "./types.js";
+import type { ContractQuote } from "./types";
 
 /**
  * Put-Call Ratio = total Put OI / total Call OI.

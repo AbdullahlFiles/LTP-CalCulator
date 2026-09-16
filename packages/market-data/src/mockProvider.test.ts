@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { MockProvider } from "./mockProvider.js";
-import { validateSnapshot } from "./validate.js";
+import { MockProvider } from "./mockProvider";
+import { validateSnapshot } from "./validate";
 
 describe("MockProvider", () => {
   it("is unhealthy until connected", async () => {
