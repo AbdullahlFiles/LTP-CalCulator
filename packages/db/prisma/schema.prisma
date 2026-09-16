@@ -1,0 +1,47 @@
+// Phase 6 (Historical Data + Charts) storage. This is the MVP form of the
+// "Postgres tables with scheduled aggregation" storage decision in
+// docs/phase-1/README.md §1 — a specialized time-series store (Timescale/
+// ClickHouse) is an explicitly deferred upgrade, not adopted speculatively.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// One row per contract per sample. Written by the historical collector
+/// (apps/web/lib/historicalCollector.ts) on a bounded interval — never on
+/// every provider tick — per FR-22 (no raw tick history reaches storage
+/// unaggregated at the source, and never reaches the browser at all).
+model ContractSnapshot {
+  id            String   @id @default(cuid())
+  instrument    String
+  expiry        String
+  strike        Int
+  optionType    String // "CE" | "PE"
+  capturedAt    DateTime
+  ltp           Float?
+  oi            Int?
+  volume        Int?
+  iv            Float?
+
+  @@index([instrument, expiry, strike, optionType, capturedAt])
+}
+
+/// One row per instrument/expiry per sample, for chain-level historical
+/// metrics (PCR, Max Pain, underlying price) that don't belong to a single
+/// strike.
+model ChainSnapshot {
+  id              String   @id @default(cuid())
+  instrument      String
+  expiry          String
+  capturedAt      DateTime
+  underlyingPrice Float
+  pcr             Float?
+  maxPain         Float?
+
+  @@index([instrument, expiry, capturedAt])
+}

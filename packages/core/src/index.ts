@@ -7,3 +7,4 @@ export * from "./maxPain";
 export * from "./supportResistance";
 export * from "./buildup";
 export * from "./chainSummary";
+export * from "./timeSeries";

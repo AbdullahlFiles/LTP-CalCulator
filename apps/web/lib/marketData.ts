@@ -15,29 +15,8 @@ import {
   type ContractQuote,
   type Moneyness,
 } from "@ltp/core";
-import { MockProvider, validateSnapshot } from "@ltp/market-data";
-
-/**
- * A single MockProvider instance for the whole server process.
- *
- * This is a Phase 4 (MVP) simplification, not the target architecture: the
- * Phase 1 design (docs/phase-1/README.md) calls for a dedicated
- * `apps/realtime-gateway` process that owns the provider connection and
- * publishes computed state through Redis, with `apps/web` only reading from
- * Redis/Postgres. Wiring that up is deferred until a real (licensed)
- * provider replaces MockProvider — building the Redis/gateway plumbing
- * around synthetic data now would be speculative infrastructure the spec
- * explicitly warns against.
- */
-const provider = new MockProvider();
-let connected = false;
-
-async function ensureConnected(): Promise<void> {
-  if (!connected) {
-    await provider.connect();
-    connected = true;
-  }
-}
+import { validateSnapshot } from "@ltp/market-data";
+import { ensureProviderConnected, provider } from "./provider";
 
 export interface ComputedContract extends ContractQuote {
   ltpChange: ChangeResult;
@@ -76,7 +55,7 @@ export async function getComputedOptionChain(
   instrument: string,
   expiry: string,
 ): Promise<ComputedOptionChain> {
-  await ensureConnected();
+  await ensureProviderConnected();
 
   const raw = await provider.getSnapshot(instrument, expiry);
   const { sanitized, valid, issues } = validateSnapshot(raw);

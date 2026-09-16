@@ -21,6 +21,12 @@ export default function Home() {
         >
           Open the Option Chain →
         </Link>
+        <Link
+          href="/charts"
+          className="inline-block rounded border border-neutral-300 px-4 py-2 dark:border-neutral-700"
+        >
+          Open Historical Charts →
+        </Link>
       </div>
     </main>
   );
