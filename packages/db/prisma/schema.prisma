@@ -45,3 +45,126 @@ model ChainSnapshot {
 
   @@index([instrument, expiry, capturedAt])
 }
+
+// ---------------------------------------------------------------------
+// Phase 8 (User Accounts + Watchlists + Alerts)
+// ---------------------------------------------------------------------
+
+/// A plan is a name the centralized entitlement module (packages/entitlements)
+/// resolves to a set of limits. This is intentionally just an enum column,
+/// not a billing record — Phase 11 (Free-to-Premium SaaS) owns subscriptions,
+/// trials, and payment webhooks; this column is the minimal seam Phase 11
+/// will attach to, not a partial implementation of it.
+enum Plan {
+  FREE
+  PREMIUM
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  /// scrypt-hashed, never a plaintext password and never a third-party
+  /// OAuth token (no OAuth provider is wired up yet — see docs/phase-8).
+  passwordHash String
+  name         String?
+  plan         Plan     @default(FREE)
+  createdAt    DateTime @default(now())
+
+  watchlists    Watchlist[]
+  alerts        Alert[]
+  recentSearches RecentSearch[]
+}
+
+model Watchlist {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String   @default("My Watchlist")
+  createdAt DateTime @default(now())
+
+  items WatchlistItem[]
+
+  @@index([userId])
+}
+
+model WatchlistItem {
+  id          String    @id @default(cuid())
+  watchlistId String
+  watchlist   Watchlist @relation(fields: [watchlistId], references: [id], onDelete: Cascade)
+  instrument  String
+  /// Null expiry/strike/optionType means "watch the instrument as a whole"
+  /// rather than one specific contract.
+  expiry      String?
+  strike      Int?
+  optionType  String?
+  createdAt   DateTime  @default(now())
+
+  @@unique([watchlistId, instrument, expiry, strike, optionType])
+  @@index([watchlistId])
+}
+
+enum AlertType {
+  LTP_THRESHOLD
+  PERCENT_MOVE
+  OI_CHANGE
+  VOLUME_SPIKE
+  IV_THRESHOLD
+  IMPORTANT_STRIKE_MOVE
+  SR_CROSSING
+  UNUSUAL_ACTIVITY
+}
+
+/// A flat (non-JSON) condition shape: `operator` + `thresholdValue` cover
+/// every threshold-style alert type, and `strike`/`optionType` scope it to
+/// a contract (or, for the two chain-level types, just to a strike level).
+/// See packages/core/src/alerts.ts (`evaluateAlert`) for the deterministic
+/// rule each AlertType maps to.
+model Alert {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  instrument      String
+  expiry          String
+  strike          Int?
+  optionType      String?
+  type            AlertType
+  operator        String? // "gte" | "lte"
+  thresholdValue  Float?
+  active          Boolean   @default(true)
+  lastTriggeredAt DateTime?
+  createdAt       DateTime  @default(now())
+
+  triggers AlertTrigger[]
+
+  @@index([userId])
+  @@index([instrument, expiry, active])
+}
+
+/// A record of each time an alert's condition was actually met. This is
+/// the Phase 8 "notification infrastructure" in its MVP form — it proves
+/// the detection loop works end-to-end and gives the user a visible
+/// history. Real delivery (email/push/SMS) is out of scope here: it needs
+/// a real provider and credentials this environment doesn't have, and the
+/// project rule is never to fabricate those. See docs/phase-8/README.md.
+model AlertTrigger {
+  id          String   @id @default(cuid())
+  alertId     String
+  alert       Alert    @relation(fields: [alertId], references: [id], onDelete: Cascade)
+  triggeredAt DateTime @default(now())
+  message     String
+
+  @@index([alertId])
+}
+
+model RecentSearch {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  instrument String
+  expiry     String?
+  strike     Int?
+  optionType String?
+  searchedAt DateTime @default(now())
+
+  @@index([userId, searchedAt])
+}

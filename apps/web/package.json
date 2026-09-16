@@ -14,13 +14,16 @@
     "@ltp/ai": "workspace:*",
     "@ltp/core": "workspace:*",
     "@ltp/db": "workspace:*",
+    "@ltp/entitlements": "workspace:*",
     "@ltp/market-data": "workspace:*",
     "@prisma/client": "^5.22.0",
     "@tanstack/react-virtual": "^3.14.13",
     "next": "15.5.25",
+    "next-auth": "5.0.0-beta.32",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "recharts": "^3.10.1"
+    "recharts": "^3.10.1",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

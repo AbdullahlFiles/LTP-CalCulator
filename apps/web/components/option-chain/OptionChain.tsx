@@ -6,6 +6,7 @@ import { getMockExpiries, INSTRUMENTS } from "@/lib/instruments";
 import { OptionChainTable } from "./OptionChainTable";
 import { AnalyticalPanels } from "./Panels";
 import { AiInsights } from "@/components/ai/AiInsights";
+import { AddToWatchlistButton } from "@/components/watchlist/AddToWatchlistButton";
 import type { SortDirection, SortMetric, ViewMode } from "./types";
 
 const REFRESH_INTERVAL_MS = 5000;
@@ -212,6 +213,7 @@ export function OptionChain() {
             </span>
             <span>As of {new Date(data.asOf).toLocaleTimeString("en-IN")}</span>
             <span>· Underlying: {data.underlyingPrice.toLocaleString("en-IN")}</span>
+            <AddToWatchlistButton instrument={instrument} label={`Watch ${instrument}`} />
           </>
         )}
       </div>
