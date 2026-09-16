@@ -73,6 +73,8 @@ model User {
   watchlists    Watchlist[]
   alerts        Alert[]
   recentSearches RecentSearch[]
+  subscription  Subscription?
+  billingEvents BillingEvent[]
 }
 
 model Watchlist {
@@ -167,4 +169,51 @@ model RecentSearch {
   searchedAt DateTime @default(now())
 
   @@index([userId, searchedAt])
+}
+
+// ---------------------------------------------------------------------
+// Phase 11 (Free-to-Premium SaaS)
+// ---------------------------------------------------------------------
+
+enum SubscriptionStatus {
+  ACTIVE
+  TRIALING
+  PAST_DUE
+  CANCELED
+}
+
+/// One row per user, tracking the source of truth for their plan.
+/// `provider`/`providerCustomerId`/`providerSubscriptionId` are populated
+/// only when a real payment provider (Stripe) is wired up — see
+/// packages/billing. A row with `provider: null` means the plan was set
+/// manually (the Phase 11 dev/demo upgrade path — see docs/phase-11 —
+/// never a real payment), which is exactly how this ships in this
+/// environment, since no real Stripe account exists here and the project
+/// rule is never to fabricate payment credentials.
+model Subscription {
+  id                     String             @id @default(cuid())
+  userId                 String             @unique
+  user                   User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan                   Plan               @default(FREE)
+  status                 SubscriptionStatus @default(ACTIVE)
+  provider               String?
+  providerCustomerId     String?
+  providerSubscriptionId String?
+  currentPeriodEnd       DateTime?
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+}
+
+/// An append-only audit log of plan changes, satisfying the project's
+/// "audit logging for sensitive actions" security rule (billing/plan
+/// changes are exactly that kind of action).
+model BillingEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String // e.g. "manual_upgrade", "manual_downgrade", "stripe_webhook:checkout.session.completed"
+  detail    String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
 }

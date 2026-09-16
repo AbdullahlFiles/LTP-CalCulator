@@ -29,8 +29,8 @@ const STRIKE_RANGE_OPTIONS: { value: number | "all"; label: string }[] = [
   { value: "all", label: "All strikes" },
 ];
 
-export function OptionChain() {
-  const [instrument, setInstrument] = useState(INSTRUMENTS[0].symbol);
+export function OptionChain({ initialInstrument }: { initialInstrument?: string } = {}) {
+  const [instrument, setInstrument] = useState(initialInstrument ?? INSTRUMENTS[0].symbol);
   const [expiry, setExpiry] = useState(EXPIRIES[0]);
   const [mode, setMode] = useState<ViewMode>("advanced");
   const [strikeRange, setStrikeRange] = useState<number | "all">(10);

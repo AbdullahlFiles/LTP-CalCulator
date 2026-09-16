@@ -13,6 +13,9 @@ importers:
       '@ltp/ai':
         specifier: workspace:*
         version: link:../../packages/ai
+      '@ltp/billing':
+        specifier: workspace:*
+        version: link:../../packages/billing
       '@ltp/core':
         specifier: workspace:*
         version: link:../../packages/core
@@ -83,6 +86,25 @@ importers:
       '@anthropic-ai/sdk':
         specifier: ^0.126.0
         version: 0.126.0(zod@4.6.5)
+    devDependencies:
+      '@types/node':
+        specifier: ^22.9.0
+        version: 22.20.3
+      typescript:
+        specifier: ^5.6.3
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.4
+        version: 2.1.9(@types/node@22.20.3)(lightningcss@1.32.0)
+
+  packages/billing:
+    dependencies:
+      '@ltp/db':
+        specifier: workspace:*
+        version: link:../db
+      stripe:
+        specifier: ^22.6.2
+        version: 22.6.2(@types/node@22.20.3)
     devDependencies:
       '@types/node':
         specifier: ^22.9.0
@@ -2427,6 +2449,15 @@ packages:
   strip-json-comments@3.1.1:
     resolution: {integrity: sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==}
     engines: {node: '>=8'}
+
+  stripe@22.6.2:
+    resolution: {integrity: sha512-PwRE2scocvXqDKPiskMa5vRJEAEkq46W69XyUYmAwrNSLr675lQnfqLwnsndAWizwgihOWw/irLmoFRo3ez7ew==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      '@types/node': '>=18'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
 
   styled-jsx@5.1.6:
     resolution: {integrity: sha512-qSVyDTeMotdvQYoHWLNGwRFJHC+i+ZvdBRYosOFgC+Wg1vx4frN2/RG/NA7SYqqvKNLf39P2LSRA2pu6n0XYZA==}
@@ -4981,6 +5012,10 @@ snapshots:
   strip-bom@3.0.0: {}
 
   strip-json-comments@3.1.1: {}
+
+  stripe@22.6.2(@types/node@22.20.3):
+    optionalDependencies:
+      '@types/node': 22.20.3
 
   styled-jsx@5.1.6(react@19.1.0):
     dependencies:

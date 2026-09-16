@@ -1,4 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildMetadata({
+  title: "NSE LTP Calculator + Options Intelligence",
+  description:
+    "A free-first NSE options intelligence platform: LTP calculator, option chain analytics, historical charts, and plain-language AI-assisted market explanations.",
+  path: "/",
+});
 
 export default function Home() {
   return (

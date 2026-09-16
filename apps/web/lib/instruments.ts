@@ -7,13 +7,19 @@
 export interface InstrumentOption {
   symbol: string;
   label: string;
+  /** URL-friendly slug for SEO-indexable per-instrument pages (Phase 9). */
+  slug: string;
 }
 
 export const INSTRUMENTS: InstrumentOption[] = [
-  { symbol: "NIFTY", label: "NIFTY 50" },
-  { symbol: "BANKNIFTY", label: "BANK NIFTY" },
-  { symbol: "FINNIFTY", label: "FINNIFTY" },
+  { symbol: "NIFTY", label: "NIFTY 50", slug: "nifty" },
+  { symbol: "BANKNIFTY", label: "BANK NIFTY", slug: "bank-nifty" },
+  { symbol: "FINNIFTY", label: "FINNIFTY", slug: "finnifty" },
 ];
+
+export function getInstrumentBySlug(slug: string): InstrumentOption | undefined {
+  return INSTRUMENTS.find((i) => i.slug === slug);
+}
 
 /** Placeholder weekly/monthly expiry stand-ins until real expiry data exists. */
 export function getMockExpiries(): string[] {

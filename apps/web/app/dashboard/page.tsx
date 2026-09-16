@@ -4,11 +4,16 @@ import { auth } from "@/auth";
 import { prisma } from "@ltp/db";
 import { getOrCreateDefaultWatchlist } from "@/lib/getOrCreateDefaultWatchlist";
 import { getLimits } from "@ltp/entitlements";
+import Link from "next/link";
 import { WatchlistPanel } from "@/components/dashboard/WatchlistPanel";
 import { AlertsPanel } from "@/components/dashboard/AlertsPanel";
+import { CancelButton } from "@/components/billing/CancelButton";
+import { NOINDEX_METADATA } from "@/lib/seo";
 
+// User-specific page — must never be indexed (docs/phase-9/README.md).
 export const metadata: Metadata = {
   title: "Dashboard — NSE Options Intelligence",
+  ...NOINDEX_METADATA,
 };
 
 export default async function DashboardPage() {
@@ -39,8 +44,17 @@ export default async function DashboardPage() {
   return (
     <main className="mx-auto max-w-4xl p-4 sm:p-8">
       <h1 className="text-2xl font-semibold">Dashboard</h1>
-      <p className="mt-1 text-sm text-neutral-500">
-        Signed in as {user.email} · Plan: {user.plan}
+      <p className="mt-1 flex items-center gap-2 text-sm text-neutral-500">
+        <span>
+          Signed in as {user.email} · Plan: {user.plan}
+        </span>
+        {user.plan === "FREE" ? (
+          <Link href="/pricing" className="text-xs underline">
+            Upgrade
+          </Link>
+        ) : (
+          <CancelButton />
+        )}
       </p>
 
       <div className="mt-6 grid gap-6 sm:grid-cols-2">

@@ -46,8 +46,8 @@ const BUILDUP_LABEL: Record<string, string> = {
   neutral: "No significant signal",
 };
 
-export function LtpCalculator() {
-  const [instrument, setInstrument] = useState(INSTRUMENTS[0].symbol);
+export function LtpCalculator({ initialInstrument }: { initialInstrument?: string } = {}) {
+  const [instrument, setInstrument] = useState(initialInstrument ?? INSTRUMENTS[0].symbol);
   const [expiry, setExpiry] = useState(EXPIRIES[0]);
   const [optionType, setOptionType] = useState<OptionType>("CE");
   const [strike, setStrike] = useState<number | null>(null);

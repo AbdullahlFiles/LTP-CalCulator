@@ -21,6 +21,12 @@ export function Nav() {
         <Link href="/charts" className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white">
           Charts
         </Link>
+        <Link href="/learn" className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white">
+          Learn
+        </Link>
+        <Link href="/pricing" className="text-neutral-500 hover:text-neutral-900 dark:hover:text-white">
+          Pricing
+        </Link>
       </div>
       <div className="flex items-center gap-3">
         {status === "authenticated" && session?.user ? (

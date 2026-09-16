@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ltp/ai": "workspace:*",
+    "@ltp/billing": "workspace:*",
     "@ltp/core": "workspace:*",
     "@ltp/db": "workspace:*",
     "@ltp/entitlements": "workspace:*",
