@@ -8,12 +8,20 @@ export default function Home() {
         A free-first NSE options intelligence platform, currently in early development. See{" "}
         <code>docs/ROADMAP.md</code> for the phase-by-phase build plan.
       </p>
-      <Link
-        href="/ltp-calculator"
-        className="mt-6 inline-block rounded bg-neutral-900 px-4 py-2 text-white dark:bg-white dark:text-black"
-      >
-        Open the LTP Calculator →
-      </Link>
+      <div className="mt-6 flex gap-3">
+        <Link
+          href="/ltp-calculator"
+          className="inline-block rounded bg-neutral-900 px-4 py-2 text-white dark:bg-white dark:text-black"
+        >
+          Open the LTP Calculator →
+        </Link>
+        <Link
+          href="/option-chain"
+          className="inline-block rounded border border-neutral-300 px-4 py-2 dark:border-neutral-700"
+        >
+          Open the Option Chain →
+        </Link>
+      </div>
     </main>
   );
 }

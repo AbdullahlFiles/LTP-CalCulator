@@ -3,20 +3,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ComputedOptionChain, ComputedContract } from "@/lib/marketData";
 import { getMockExpiries, INSTRUMENTS } from "@/lib/instruments";
+import { formatNumber } from "@/lib/format";
 
 type OptionType = "CE" | "PE";
 type FetchStatus = "loading" | "ready" | "error";
 
 const REFRESH_INTERVAL_MS = 5000;
 const EXPIRIES = getMockExpiries();
-
-function formatNumber(value: number | null, digits = 2): string {
-  if (value === null) return "—";
-  return value.toLocaleString("en-IN", {
-    maximumFractionDigits: digits,
-    minimumFractionDigits: 0,
-  });
-}
 
 function ChangeBadge({ change, percent }: { change: number | null; percent: number | null }) {
   if (change === null || percent === null) {

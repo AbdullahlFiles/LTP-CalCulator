@@ -2,11 +2,13 @@ import {
   classifyMoneyness,
   computeContractLtpChange,
   computeContractOiChange,
+  computeMarketSummary,
   computeMaxPain,
   computePcr,
   detectBuildup,
   detectImportantStrikes,
   detectSupportResistance,
+  detectUnusualActivity,
   findAtmStrike,
   type BuildupSignal,
   type ChangeResult,
@@ -56,6 +58,8 @@ export interface ComputedOptionChain {
   contracts: ComputedContract[];
   supportResistance: ReturnType<typeof detectSupportResistance>;
   importantStrikes: ReturnType<typeof detectImportantStrikes>;
+  unusualActivity: ReturnType<typeof detectUnusualActivity>;
+  marketSummary: ReturnType<typeof computeMarketSummary>;
   dataSource: string;
 }
 
@@ -109,6 +113,9 @@ export async function getComputedOptionChain(
   const asOfMs = new Date(sanitized.asOf).getTime();
   const stale = Number.isNaN(asOfMs) || Date.now() - asOfMs > STALE_AFTER_MS;
 
+  const pcr = computePcr(sanitized.contracts);
+  const maxPain = computeMaxPain(sanitized.contracts);
+
   return {
     instrument: sanitized.instrument,
     expiry: sanitized.expiry,
@@ -116,11 +123,18 @@ export async function getComputedOptionChain(
     atmStrike,
     asOf: sanitized.asOf,
     stale,
-    pcr: computePcr(sanitized.contracts),
-    maxPain: computeMaxPain(sanitized.contracts),
+    pcr,
+    maxPain,
     contracts,
     supportResistance: detectSupportResistance(sanitized.contracts),
     importantStrikes: detectImportantStrikes(sanitized.contracts),
+    unusualActivity: detectUnusualActivity(sanitized.contracts),
+    marketSummary: computeMarketSummary({
+      pcr,
+      maxPain,
+      underlyingPrice: sanitized.underlyingPrice,
+      atmStrike,
+    }),
     dataSource: provider.name,
   };
 }
